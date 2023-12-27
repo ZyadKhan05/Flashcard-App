@@ -1,7 +1,4 @@
 package application;
-
-
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -10,11 +7,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.util.Random;
 
+// This class is from the Tic-Tac-Toe Game. We can use it as a reference point. 
 class Player {
 
     // Labels
-    Label player1Label = new Label("Player 1 Name:");
-    Label player2Label = new Label("Player 2 Name:");
+    Label player1Label = new Label("Enter in your term:");
+    Label player2Label = new Label("Enter in the definition for this term:");
     Label winnerLabel = new Label("");
 
     // String Variables
