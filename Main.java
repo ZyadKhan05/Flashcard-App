@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -30,7 +32,9 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        Player player = new Player();
+        Flashcards flashcard = new Flashcards();
+        int cnt;
+     
 
         // Create TextField for user to enter the flashcard info
         TextField termInput = new TextField();
@@ -38,15 +42,15 @@ public class Main extends Application {
 
 
         // Add Button
-        Button playButton = new Button("Add");
+        Button addButton = new Button("Add");
 
 
         //Create VBox
-        HBox termVBox = new HBox(10, player.player1Label, termInput);
+        HBox termVBox = new HBox(10, flashcard.termLabel, termInput);
         termVBox.setAlignment(Pos.CENTER);
-        HBox defVBox = new HBox(10, player.player2Label, defInput); 
+        HBox defVBox = new HBox(10, flashcard.defLabel, defInput); 
         defVBox.setAlignment(Pos.CENTER);
-        VBox vbox = new VBox(10, termVBox, defVBox, playButton);
+        VBox vbox = new VBox(10, termVBox, defVBox, addButton);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
        
@@ -55,41 +59,48 @@ public class Main extends Application {
 
         primaryStage.setScene(addScene);
         primaryStage.setTitle("Flashcard Menu");
-        primaryStage.setFullScreen(true);
+        // primaryStage.setFullScreen(true); // I think that Full Screen makes it worse...
         primaryStage.show();
 
-        // Game - This needs to become our primary app as this is just from Tic-Tac-Toe
-//        playButton.setOnAction((new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent e) {
-//                player.p1Name = termInput.getText();
-//                player.p2Name = defInput.getText();
-//
-//                player.setBoard();
-//                player.isPlayerXO();
-//                player.isTurn();
-//                player.setLabel();
-//
-//
-//                flashcardsScene = new Scene(player.gameVbox);
-//                primaryStage.setScene(flashcardsScene);
-//                primaryStage.setTitle("Tic-Tac-Toe Game");
-//                primaryStage.show();
-//            }
-//        }));
-//
-//        player.quitButton.setOnAction(event -> {
+        
+        // Event handling for the Add Button
+        addButton.setOnAction((new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	
+            	// Adds the term and def to the ArrayList 
+            	flashcard.terms.add(termInput.getText());
+            	flashcard.defs.add(defInput.getText());
+            	
+            	// Calling method setFlashCard()
+            	flashcard.setFlashcard();
+
+            	// Create and set scene
+            	flashcardsScene = new Scene(flashcard.flashcards);
+            	primaryStage.setScene(flashcardsScene);
+            	primaryStage.setTitle("Flashcards");
+            	primaryStage.show();
+            }
+        }));
+
+
+        // Event handling for the Add another flashcard button
+        flashcard.addFlashcard.setOnAction(event -> {
+            primaryStage.setScene(addScene);
+        });
+        
+//        flashcard.quitButton.setOnAction(event -> {
 //            primaryStage.close();
 //        });
-//        player.restartButton.setOnAction(event -> {
-//            player.board.setDisable(false);
-//            player.isPlayerXO();
-//            player.isTurn();
-//            player.resetBoard();
-//            player.restartButton.setVisible(false);
-//            player.winnerLabel.setText("");
-//            player.xWins = false;
-//            player.oWins = false;
-//        });}
+//       flashcard.restartButton.setOnAction(event -> {
+//            flashcard.board.setDisable(false);
+//            flashcard.isflashcardXO();
+//            flashcard.isTurn();
+//           flashcard.resetBoard();
+//            flashcard.restartButton.setVisible(false);
+//            flashcard.winnerLabel.setText("");
+//            flashcard.xWins = false;
+//            flashcard.oWins = false;
+//       });
     }
 }
