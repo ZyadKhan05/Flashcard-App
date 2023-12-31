@@ -1,70 +1,69 @@
 package application;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-// This class is from the Tic-Tac-Toe Game. We can use it as a reference point. 
 class Flashcards {
 
-	int cnt; 
+	int cnt;
+
+	// Labels
+	Label termLabel = new Label("Enter in your term:");
+	Label defLabel = new Label("Enter in the definition for this term:");
+
+	// ArrayList Variables
+	ArrayList<String> terms = new ArrayList<String>();
+	ArrayList<String> defs = new ArrayList<String>();
+
+	VBox flashcards;
+	Button addFlashcard = new Button("Add Another Flashcard");
 	
-    // Labels
-    Label termLabel = new Label("Enter in your term:");
-    Label defLabel = new Label("Enter in the definition for this term:");
+	// Will want to implement a delete flashcard button - LATER
 
-    // ArrayList Variables
-    ArrayList<String> terms = new ArrayList<String>();
-    ArrayList<String> defs = new ArrayList<String>();
-    
-    VBox flashcards;
-    Button addFlashcard = new Button("Add Another Flashcard");
-    // Will want to implement a delete flashcard button - LATER
-    
-    public void setFlashcard() {
-    
-	    String term = terms.get(cnt);
-	    String def = defs.get(cnt);
-	    
-	    
-	    Label t = new Label("Terms");
-	    Label d = new Label("Definitions");
-	    
+	private Label termsLabel;
+	private Label defsLabel;
+	Text t = new Text("Terms");
+	Text d = new Text("Definitions");
 
-	    Label terms = new Label(term);
-	    Label defs = new Label (def);
-	    
-	    // Need to figure out a way for the old flashcard text to remain and append the new
-	    if (cnt > 0) {
-	    	terms.setText(terms.getText() + "\n" + term);
-	    	defs.setText(defs.getText()  + "\n" +  def);
-	    }
-	    
-	    // VBoxs for Flashcard
-	    HBox termHBox = new HBox (10, t, d);
-	    termHBox.setAlignment(Pos.TOP_CENTER);
-
-	    HBox defHBox = new HBox (10, terms, defs);
-	    defHBox.setAlignment(Pos.CENTER);
-	    
+	
 
 
-	    flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
-	    cnt++;
+	public void setFlashcard() {
 
-    }
-    
-    
-    
+		String term = terms.get(cnt);
+		String def = defs.get(cnt);
 
-    
+		if (cnt == 0) {
+			// Create the labels on first run
+			termsLabel = new Label(term);
+			defsLabel = new Label(def);
+		} else {
+			// Append new text to existing text
+			termsLabel.setText(termsLabel.getText() + "\n" + term);
+			defsLabel.setText(defsLabel.getText() + "\n" + def);
+		}
 
-    // Boolean variables
+		// VBoxs for Flashcard
+
+		HBox termHBox = new HBox(10, t , d);
+		termHBox.setAlignment(Pos.TOP_CENTER);
+		HBox defHBox = new HBox(10, termsLabel, defsLabel);
+		defHBox.setAlignment(Pos.CENTER);
+		flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
+
+		cnt++;
+
+	}
+
+	// Boolean variables
 //    boolean isPlayerXO;
 //    boolean p1Turn;
 //    boolean p2Turn;
@@ -345,6 +344,4 @@ class Flashcards {
 //        buttons[b].setStyle("-fx-background-color: Green; ");
 //        buttons[c].setStyle("-fx-background-color: Green; ");
 
-    
 }
-

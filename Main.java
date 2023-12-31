@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,6 +31,10 @@ public class Main extends Application {
     Scene addScene;
     Scene flashcardsScene;
     
+    
+
+    
+
     @Override
     public void start(Stage primaryStage) {
         Flashcards flashcard = new Flashcards();
@@ -44,8 +49,7 @@ public class Main extends Application {
         // Add Button
         Button addButton = new Button("Add");
 
-
-        //Create VBox
+        //Create HBox and VBox scenes
         HBox termVBox = new HBox(10, flashcard.termLabel, termInput);
         termVBox.setAlignment(Pos.CENTER);
         HBox defVBox = new HBox(10, flashcard.defLabel, defInput); 
@@ -82,6 +86,28 @@ public class Main extends Application {
             	primaryStage.show();
             }
         }));
+        
+        addScene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+            	// Adds the term and def to the ArrayList 
+            	flashcard.terms.add(termInput.getText());
+            	flashcard.defs.add(defInput.getText());
+            	
+            	// Calling method setFlashCard()
+            	flashcard.setFlashcard();
+            	
+            	// The CSS is not applying correctly
+            	flashcard.t.setId("t");
+            	flashcard.d.setId("d");
+
+            	// Create and set scene
+            	flashcardsScene = new Scene(flashcard.flashcards);
+            	flashcardsScene.getStylesheets().add("application.css");
+            	primaryStage.setScene(flashcardsScene);
+            	primaryStage.setTitle("Flashcards");
+            	primaryStage.show();
+            }
+        });
 
 
         // Event handling for the Add another flashcard button

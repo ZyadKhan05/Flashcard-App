@@ -1,1 +1,15 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+#t {
+    -fx-font: 100px Tahoma;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}
+
+#d {
+    -fx-font: 100px Tahoma;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}
