@@ -31,30 +31,27 @@ public class Main extends Application {
     Scene addScene;
     Scene flashcardsScene;
     
-    
-
-    
-
     @Override
     public void start(Stage primaryStage) {
+    	//Create Flashcards object
         Flashcards flashcard = new Flashcards();
-        int cnt;
      
-
-        // Create TextField for user to enter the flashcard info
+        // TextField for inputs
         TextField termInput = new TextField();
         TextField defInput = new TextField();
 
-
         // Add Button
         Button addButton = new Button("Add");
+        
+        //View terms and definition button
+        Button viewButton = new Button("View");
 
-        //Create HBox and VBox scenes
+        //Create HBox and VBox
         HBox termVBox = new HBox(10, flashcard.termLabel, termInput);
-        termVBox.setAlignment(Pos.CENTER);
         HBox defVBox = new HBox(10, flashcard.defLabel, defInput); 
+        VBox vbox = new VBox(10, termVBox, defVBox, addButton, viewButton);
+        termVBox.setAlignment(Pos.CENTER);
         defVBox.setAlignment(Pos.CENTER);
-        VBox vbox = new VBox(10, termVBox, defVBox, addButton);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
        
@@ -75,16 +72,22 @@ public class Main extends Application {
             	// Adds the term and def to the ArrayList 
             	flashcard.terms.add(termInput.getText());
             	flashcard.defs.add(defInput.getText());
-            	
-            	// Calling method setFlashCard()
             	flashcard.setFlashcard();
-
-            	// Create and set scene
-            	flashcardsScene = new Scene(flashcard.flashcards);
+            }
+        }));
+        
+        // BUG - Issue when you click view without adding - Fixed this bug
+        // But now it does not stack the flashcards
+        // Current Bug - Issue when you try to enter more than one flashcard 
+        viewButton.setOnAction((new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent e) {
+        		// Create and set scene
+        		flashcard.viewFlashCard();
+        		flashcardsScene = new Scene(flashcard.flashcards);
             	primaryStage.setScene(flashcardsScene);
             	primaryStage.setTitle("Flashcards");
             	primaryStage.show();
-            }
+        	}
         }));
         
         addScene.setOnKeyPressed(e -> {
