@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -31,6 +32,10 @@ public class Main extends Application {
     Scene addScene;
     Scene flashcardsScene;
     
+    // Variables
+    VBox vbox;
+    Text confirmation;
+    
     @Override
     public void start(Stage primaryStage) {
     	//Create Flashcards object
@@ -42,6 +47,9 @@ public class Main extends Application {
 
         // Add Button
         Button addButton = new Button("Add");
+        addButton.disableProperty().bind(termInput.textProperty().isEmpty());
+        addButton.disableProperty().bind(defInput.textProperty().isEmpty());
+
         
         //View terms and definition button
         Button viewButton = new Button("View");
@@ -49,19 +57,34 @@ public class Main extends Application {
         //Create HBox and VBox
         HBox termVBox = new HBox(10, flashcard.termLabel, termInput);
         HBox defVBox = new HBox(10, flashcard.defLabel, defInput); 
-        VBox vbox = new VBox(10, termVBox, defVBox, addButton, viewButton);
+        vbox = new VBox(15, termVBox, defVBox, addButton, viewButton);
         termVBox.setAlignment(Pos.CENTER);
         defVBox.setAlignment(Pos.CENTER);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
        
 
-        addScene = new Scene(vbox);
+    
+        // Scroll Bar
+        ScrollPane  scrollBar = new ScrollPane();
+        scrollBar.setContent(vbox);
+        scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); 
+        scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
+
+        addScene = new Scene(scrollBar);
+     
+        
+        scrollBar.setPrefHeight(addScene.getHeight());
+        scrollBar.setMaxHeight(addScene.getHeight());
+        
         primaryStage.setScene(addScene);
         primaryStage.setTitle("Flashcard Menu");
         // primaryStage.setFullScreen(true); // I think that Full Screen makes it worse...
         primaryStage.show();
+        
+    	primaryStage.setMinHeight(225);
+    	primaryStage.setMinWidth(300);
 
         
         // Event handling for the Add Button
@@ -73,44 +96,49 @@ public class Main extends Application {
             	flashcard.terms.add(termInput.getText());
             	flashcard.defs.add(defInput.getText());
             	flashcard.setFlashcard();
+            	confirmation = new Text("Flashcard Added!");
+            	confirmation.setVisible(true);
+            	vbox.getChildren().add(confirmation);
+            	primaryStage.setHeight(300);
+            	primaryStage.setWidth(400);
             }
         }));
         
-        // BUG - Issue when you click view without adding - Fixed this bug
-        // But now it does not stack the flashcards
-        // Current Bug - Issue when you try to enter more than one flashcard 
+
         viewButton.setOnAction((new EventHandler<ActionEvent>() {
         	public void handle(ActionEvent e) {
         		// Create and set scene
         		flashcard.viewFlashCard();
-        		flashcardsScene = new Scene(flashcard.flashcards);
+        		flashcardsScene = new Scene(flashcard.scrollBar);
             	primaryStage.setScene(flashcardsScene);
             	primaryStage.setTitle("Flashcards");
             	primaryStage.show();
+            	confirmation.setVisible(false);
         	}
         }));
         
-        addScene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {
-            	// Adds the term and def to the ArrayList 
-            	flashcard.terms.add(termInput.getText());
-            	flashcard.defs.add(defInput.getText());
-            	
-            	// Calling method setFlashCard()
-            	flashcard.setFlashcard();
-            	
-            	// The CSS is not applying correctly
-            	flashcard.t.setId("t");
-            	flashcard.d.setId("d");
-
-            	// Create and set scene
-            	flashcardsScene = new Scene(flashcard.flashcards);
-            	flashcardsScene.getStylesheets().add("application.css");
-            	primaryStage.setScene(flashcardsScene);
-            	primaryStage.setTitle("Flashcards");
-            	primaryStage.show();
-            }
-        });
+        //  For simplicity let's disable this feature for the time being 
+//        addScene.setOnKeyPressed(e -> {
+//            if (e.getCode() == KeyCode.ENTER) {
+//            	// Adds the term and def to the ArrayList 
+//            	flashcard.terms.add(termInput.getText());
+//            	flashcard.defs.add(defInput.getText());
+//            	
+//            	// Calling method setFlashCard()
+//            	flashcard.setFlashcard();
+//            	
+//            	// The CSS is not applying correctly
+//            	flashcard.t.setId("t");
+//            	flashcard.d.setId("d");
+//
+//            	// Create and set scene
+//            	flashcardsScene = new Scene(flashcard.flashcards);
+//            	flashcardsScene.getStylesheets().add("application.css");
+//            	primaryStage.setScene(flashcardsScene);
+//            	primaryStage.setTitle("Flashcards");
+//            	primaryStage.show();
+//            }
+//        });
 
 
         // Event handling for the Add another flashcard button

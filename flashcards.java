@@ -2,8 +2,10 @@ package application;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -32,29 +34,39 @@ class Flashcards {
 
 	Text t = new Text("Terms");
 	Text d = new Text("Definitions");
+	
+	ScrollPane scrollBar;
 
-	//Method to view flash card - added 12/31/2023
+	//Method to view flash card
+	// BUG - View is not Centered
+	// NEXT Step: Can we make this more visually appealing?
 	public void viewFlashCard() {
-		
-		for (int i = 0; i < terms.size(); i++) {
-			termsLabel.setText(terms.get(i) + "\n");
-		}
-		for (int i = 0; i < defs.size(); i++) {
-			defsLabel.setText(defs.get(i) + "\n");
-		}
-		
-		
-		if (cnt == 0) {
-			termsLabel = new Label("No Flashcards");
-			defsLabel = new Label("Entered");
-			
-			HBox termHBox = new HBox(10, t , d);
-			termHBox.setAlignment(Pos.TOP_CENTER);
-			HBox defHBox = new HBox(10, termsLabel, defsLabel);
-			defHBox.setAlignment(Pos.CENTER);
-			flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
-		}
+	    VBox flashcards;
+
+	    if (terms.isEmpty() || defs.isEmpty()) {
+	        termsLabel = new Label("No Flashcards Entered");
+	        defsLabel = new Label("");
+	    } else {
+	        termsLabel = new Label(String.join("\n", terms));
+	        defsLabel = new Label(String.join("\n", defs));
+	    }
+
+	    // HBoxs and VBox for Flashcard
+	    HBox termHBox = new HBox(10, t, d);
+	    termHBox.setAlignment(Pos.CENTER);
+	    HBox defHBox = new HBox(10, termsLabel, defsLabel);
+	    defHBox.setAlignment(Pos.CENTER);
+	    flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
+	    flashcards.setAlignment(Pos.CENTER); 
+
+	    scrollBar = new ScrollPane();
+	    scrollBar.setContent(flashcards);
+	    scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+	    scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 	}
+
+
+
 
 	public void setFlashcard() {
 
@@ -79,8 +91,15 @@ class Flashcards {
 		HBox defHBox = new HBox(10, termsLabel, defsLabel);
 		defHBox.setAlignment(Pos.CENTER);
 		flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
-
+		flashcards.setAlignment(Pos.TOP_CENTER);
 		cnt++;
+		
+        scrollBar = new ScrollPane();
+        scrollBar.setContent(flashcards);
+        scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); 
+        scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        
+
 
 	}
 	
