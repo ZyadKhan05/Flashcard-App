@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 class Flashcards {
-	private Label termsLabel; 
+	private Label termsLabel;
 	private Label defsLabel;
 	VBox flashcards;
 	int cnt;
@@ -26,83 +26,91 @@ class Flashcards {
 	// ArrayList Variables
 	ArrayList<String> terms = new ArrayList<String>();
 	ArrayList<String> defs = new ArrayList<String>();
-
-	Button addFlashcard = new Button("Add Another Flashcard");
+	ArrayList<Button> deleteBtns = new ArrayList<>();
 	
-	// Will want to implement a delete flashcard button - LATER
+	// BUG - The delete button is not visible
+	Button deleteBtn;
+	Button addFlashcard = new Button("Add Another Flashcard");
 
 
 	Text t = new Text("Terms");
 	Text d = new Text("Definitions");
-	
+
 	ScrollPane scrollBar;
 
-	//Method to view flash card
+	// Method to view flash card
 	// BUG - View is not Centered
 	// NEXT Step: Can we make this more visually appealing?
 	public void viewFlashCard() {
-	    VBox flashcards;
 
-	    if (terms.isEmpty() || defs.isEmpty()) {
-	        termsLabel = new Label("No Flashcards Entered");
-	        defsLabel = new Label("");
-	    } else {
-	        termsLabel = new Label(String.join("\n", terms));
-	        defsLabel = new Label(String.join("\n", defs));
-	    }
 
-	    // HBoxs and VBox for Flashcard
-	    HBox termHBox = new HBox(10, t, d);
-	    termHBox.setAlignment(Pos.CENTER);
-	    HBox defHBox = new HBox(10, termsLabel, defsLabel);
-	    defHBox.setAlignment(Pos.CENTER);
-	    flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
-	    flashcards.setAlignment(Pos.CENTER); 
+		VBox flashcards;
 
-	    scrollBar = new ScrollPane();
-	    scrollBar.setContent(flashcards);
-	    scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-	    scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		if (terms.isEmpty() || defs.isEmpty()) {
+			termsLabel = new Label("No Flashcards Entered");
+			defsLabel = new Label("");
+		} else {
+			termsLabel = new Label(String.join("\n", terms));
+			defsLabel = new Label(String.join("\n", defs));
+		}
+
+		// HBoxs and VBox for Flashcard
+		HBox termHBox = new HBox(10, t, d);
+		termHBox.setAlignment(Pos.CENTER);
+		HBox defHBox = new HBox(10, termsLabel, defsLabel);
+		defHBox.setAlignment(Pos.CENTER);
+		flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
+		flashcards.setAlignment(Pos.CENTER);
+
+		scrollBar = new ScrollPane();
+		scrollBar.setContent(flashcards);
+		scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		
 	}
-
-
-
 
 	public void setFlashcard() {
 
-		  String term = terms.get(cnt);
-		  String def = defs.get(cnt);
+		String term = terms.get(cnt);
+		String def = defs.get(cnt);
 
-		  if(cnt == 0) {
-		    // Create labels on first run
-		    termsLabel = new Label(term);  
-		    defsLabel = new Label(def);
+		if (cnt == 0) {
+			// Create labels on first run
+			termsLabel = new Label(term);
+			defsLabel = new Label(def);
 
-		  } else {
-		    // Append new text to existing labels
-		    termsLabel.setText(termsLabel.getText() + "\n" + term);
-		    defsLabel.setText(defsLabel.getText() + "\n" + def);
-		  }
+		} else {
+			// Append new text to existing labels
+			termsLabel.setText(termsLabel.getText() + "\n" + term);
+			defsLabel.setText(defsLabel.getText() + "\n" + def);
+		}
+
+		// Delete Button
+		deleteBtn = new Button("Delete");
+		deleteBtns.add(deleteBtn);
 
 
 		// HBoxs and VBox for Flashcard
-		HBox termHBox = new HBox(10, t , d);
+		HBox termHBox = new HBox(10, t, d);
 		termHBox.setAlignment(Pos.TOP_CENTER);
-		HBox defHBox = new HBox(10, termsLabel, defsLabel);
+		HBox defHBox = new HBox(10, termsLabel, defsLabel, deleteBtn);
 		defHBox.setAlignment(Pos.CENTER);
 		flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
 		flashcards.setAlignment(Pos.TOP_CENTER);
 		cnt++;
-		
-        scrollBar = new ScrollPane();
-        scrollBar.setContent(flashcards);
-        scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); 
-        scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        
 
+		scrollBar = new ScrollPane();
+		scrollBar.setContent(flashcards);
+		scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+		deleteBtn.setOnAction(e -> {
+			terms.remove(cnt);
+			defs.remove(cnt);
+
+			setFlashcard();
+		});
 
 	}
-	
-
 
 }

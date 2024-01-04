@@ -1,10 +1,52 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-
-#t {
-    -fx-font: 100px;
+/* Define a style for buttons */
+.button {
+    -fx-background-color: #0080FE;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
 }
 
-#d {
-    -fx-font: 100px;
-
+/* Style the text fields */
+.text-field {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-border-radius: 3px;
+    -fx-border-color: #ccc;
 }
+
+/* Style the labels */
+.label {
+    -fx-font-size: 14px;
+}
+
+/* Style the scroll bar */
+.scroll-pane {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Style the confirmation text */
+.confirmation-text {
+    -fx-font-size: 16px;
+    -fx-fill: #009688; /* Teal color */
+}
+
+/* Style the flashcard view */
+.flashcards-view {
+    -fx-background-color: #fff;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #ccc;
+	-fx-alignment: center;
+}
+
+/* Style the delete button */
+.delete-button {
+    -fx-background-color: #FF5722; /* Red */
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 3px;
+}
+
+
