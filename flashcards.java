@@ -39,35 +39,36 @@ class Flashcards {
 	ScrollPane scrollBar;
 
 	// Method to view flash card
-	// BUG - View is not Centered
 	// NEXT Step: Can we make this more visually appealing?
+	// Like actual flashcards that you could click on?
 	public void viewFlashCard() {
+	    VBox flashcards;
 
+	    if (terms.isEmpty() || defs.isEmpty()) {
+	        termsLabel = new Label("No Flashcards Entered");
+	        defsLabel = new Label("");
+	    } else {
+	        termsLabel = new Label(String.join("\n", terms));
+	        defsLabel = new Label(String.join("\n", defs));
+	    }
 
-		VBox flashcards;
+	    // HBoxs and VBox for Flashcard
+	    HBox termHBox = new HBox(10, t, d);
+	    termHBox.setAlignment(Pos.CENTER);
+	    VBox.setMargin(termHBox, new Insets(0, 0, 10, 0));
 
-		if (terms.isEmpty() || defs.isEmpty()) {
-			termsLabel = new Label("No Flashcards Entered");
-			defsLabel = new Label("");
-		} else {
-			termsLabel = new Label(String.join("\n", terms));
-			defsLabel = new Label(String.join("\n", defs));
-		}
+	    HBox defHBox = new HBox(10, termsLabel, defsLabel);
+	    defHBox.setAlignment(Pos.CENTER);
+	    flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
+	    flashcards.setAlignment(Pos.CENTER);
 
-		// HBoxs and VBox for Flashcard
-		HBox termHBox = new HBox(10, t, d);
-		termHBox.setAlignment(Pos.CENTER);
-		HBox defHBox = new HBox(10, termsLabel, defsLabel);
-		defHBox.setAlignment(Pos.CENTER);
-		flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
-		flashcards.setAlignment(Pos.CENTER);
-
-		scrollBar = new ScrollPane();
-		scrollBar.setContent(flashcards);
-		scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		
+	    scrollBar = new ScrollPane();
+	    scrollBar.setContent(flashcards);
+	    scrollBar.setFitToWidth(true); 
+	    scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+	    scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 	}
+
 
 	public void setFlashcard() {
 
