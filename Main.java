@@ -52,6 +52,10 @@ public class Main extends Application {
 
 		// View terms and definition button
 		Button viewButton = new Button("View");
+//		viewButton.disableProperty().bind(termInput.textProperty().isEmpty());
+//		viewButton.disableProperty().bind(defInput.textProperty().isEmpty());
+
+
 
 		// Create HBox and VBox
 		HBox termVBox = new HBox(10, flashcard.termLabel, termInput);
@@ -109,10 +113,14 @@ public class Main extends Application {
 				primaryStage.setScene(flashcardsScene);
 				primaryStage.setTitle("Flashcards");
 				primaryStage.show();
+				primaryStage.setHeight(400);
+				primaryStage.setWidth(700);
 				confirmation.setVisible(false);
 				
 				// Add css to flashcards scene
 				flashcardsScene.getStylesheets().add(css);
+				
+				
 
 
 			}

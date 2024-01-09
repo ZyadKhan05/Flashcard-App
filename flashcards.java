@@ -27,11 +27,10 @@ class Flashcards {
 	ArrayList<String> terms = new ArrayList<String>();
 	ArrayList<String> defs = new ArrayList<String>();
 	ArrayList<Button> deleteBtns = new ArrayList<>();
-	
+
 	// BUG - The delete button is not visible
 	Button deleteBtn;
 	Button addFlashcard = new Button("Add Another Flashcard");
-
 
 	Text t = new Text("Terms");
 	Text d = new Text("Definitions");
@@ -39,36 +38,93 @@ class Flashcards {
 	ScrollPane scrollBar;
 
 	// Method to view flash card
-	// NEXT Step: Can we make this more visually appealing?
-	// Like actual flashcards that you could click on?
 	public void viewFlashCard() {
-	    VBox flashcards;
+		// Primary VBox
+		VBox flashcards = new VBox();
 
-	    if (terms.isEmpty() || defs.isEmpty()) {
-	        termsLabel = new Label("No Flashcards Entered");
-	        defsLabel = new Label("");
+		// Not active anymore 
+		// BUG - When the view is clicked on start with nothing entered, it freaks out
+		if (terms.isEmpty() || defs.isEmpty()) {
+	        Label noCards = new Label("No flashcards entered");
+	        flashcards.getChildren().add(noCards);
 	    } else {
-	        termsLabel = new Label(String.join("\n", terms));
-	        defsLabel = new Label(String.join("\n", defs));
-	    }
 
-	    // HBoxs and VBox for Flashcard
-	    HBox termHBox = new HBox(10, t, d);
-	    termHBox.setAlignment(Pos.CENTER);
-	    VBox.setMargin(termHBox, new Insets(0, 0, 10, 0));
+		// For each item in the terms and defs list
+		for (int i = 0; i < terms.size(); i++) {
 
-	    HBox defHBox = new HBox(10, termsLabel, defsLabel);
-	    defHBox.setAlignment(Pos.CENTER);
-	    flashcards = new VBox(10, termHBox, defHBox, addFlashcard);
-	    flashcards.setAlignment(Pos.CENTER);
+			// Term and Def at i
+			String term = terms.get(i);
+			String def = defs.get(i);
 
-	    scrollBar = new ScrollPane();
-	    scrollBar.setContent(flashcards);
-	    scrollBar.setFitToWidth(true); 
-	    scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-	    scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+			// Front
+			VBox front = new VBox();
+			front.setPrefSize(300, 200);
+			front.setAlignment(Pos.CENTER);
+			front.setStyle("-fx-background-color: lightblue;");
+
+			// Term label
+			Label termLabel = new Label("Term:");
+			front.getChildren().add(termLabel);
+
+			// Term
+			Label termText = new Label(term);
+			termText.setStyle("-fx-text-fill: darkblue; -fx-font-weight: bold;");
+			front.getChildren().add(termText);
+
+			// Back
+			VBox back = new VBox();
+			back.setPrefSize(300, 200);
+			back.setAlignment(Pos.CENTER);
+			back.setStyle("-fx-background-color: lightgreen;");
+
+			// Def Label
+			Label defLabel = new Label("Definition:");
+			back.getChildren().add(defLabel);
+
+			// Def
+			Label defText = new Label(def);
+			defText.setStyle("-fx-text-fill: darkgreen;");
+
+			back.getChildren().add(defText);
+
+			// HBox
+			HBox card = new HBox();
+			card.setAlignment(Pos.CENTER);
+			card.setStyle("-fx-margin: 20px;");
+			card.getChildren().addAll(front, back);
+
+			// On default the front is visible
+			front.setVisible(true);
+			back.setVisible(false);
+
+			// Click handlers
+			front.setOnMouseClicked(e -> {
+				front.setVisible(false);
+				back.setVisible(true);
+			});
+			back.setOnMouseClicked(e -> {
+				back.setVisible(false);
+				front.setVisible(true);
+			});
+
+			// VBox for the add button
+			VBox bottom = new VBox();
+			bottom.setAlignment(Pos.BOTTOM_CENTER);
+			bottom.getChildren().add(addFlashcard);
+
+			// Combine it all to the VBox
+			flashcards.getChildren().add(card);
+			flashcards.getChildren().add(bottom);
+			flashcards.setSpacing(2);
+
+		}
+
+		// Set primary vbox with scroll bar
+		 scrollBar = new ScrollPane(flashcards); // Use the class-level ScrollPane
+         scrollBar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+         scrollBar.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		  }
 	}
-
 
 	public void setFlashcard() {
 
@@ -89,7 +145,6 @@ class Flashcards {
 		// Delete Button
 		deleteBtn = new Button("Delete");
 		deleteBtns.add(deleteBtn);
-
 
 		// HBoxs and VBox for Flashcard
 		HBox termHBox = new HBox(10, t, d);
